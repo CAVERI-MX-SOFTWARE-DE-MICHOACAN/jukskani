@@ -4,8 +4,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/kidoman/embd"
 	_ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
 )
@@ -22,19 +22,22 @@ func main() {
 	fmt.Println(encoded)
 	embd.InitGPIO()
 	defer embd.CloseGPIO()
-	for _, pin := range PIN2RELES {
-		Rele, _ := embd.NewDigitalPin(pin)
-		Rele.SetDirection(embd.Out)
-		Rele.Write(embd.High)
-		RELES = append(RELES, Rele)
-	}
-	for {
-		for _, pin := range RELES {
-			pin.Write(embd.High)
-			time.Sleep(500 * time.Millisecond)
-			pin.Write(embd.Low)
-			time.Sleep(500 * time.Millisecond)
-			fmt.Print("*")
-		}
-	}
+	router := gin.Default()
+	router.GET("/api/relays/:id", RelayHandler)
+	router.Run(":8000")
+	// for _, pin := range PIN2RELES {
+	// 	Rele, _ := embd.NewDigitalPin(pin)
+	// 	Rele.SetDirection(embd.Out)
+	// 	Rele.Write(embd.High)
+	// 	RELES = append(RELES, Rele)
+	// }
+	// for {
+	// 	for _, pin := range RELES {
+	// 		pin.Write(embd.High)
+	// 		time.Sleep(500 * time.Millisecond)
+	// 		pin.Write(embd.Low)
+	// 		time.Sleep(500 * time.Millisecond)
+	// 		fmt.Print("*")
+	// 	}
+	// }
 }
