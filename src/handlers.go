@@ -7,7 +7,7 @@ import (
 )
 
 func RelayHandler(c *gin.Context) {
-	relay := c.Param("relay")
+	relay := c.Param("id")
 	state := c.Query("state")
 	c.IndentedJSON(http.StatusOK, gin.H{"relay": relay, "state": state})
 }
