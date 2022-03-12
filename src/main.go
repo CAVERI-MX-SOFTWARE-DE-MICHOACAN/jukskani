@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"caveri.mx/jukskani/src/models"
 	"github.com/gin-gonic/gin"
 	"github.com/kidoman/embd"
@@ -12,18 +14,21 @@ var PIN2RELES = []int{27, 22, 23, 24, 25, 16, 26, 6}
 
 func main() {
 	var RELES []models.Relay
+	sensorDHT := &models.SensorDHT{}
+	sensorDHT.Init(PIN_DHT22)
+	embd.InitGPIO()
+	defer embd.CloseGPIO()
+	fmt.Println(sensorDHT)
 	for _, pin := range PIN2RELES {
 		Rele := models.Relay{Pin_GPIO: pin}
-		Rele.Init(1)
+		Rele.Write(1)
 		RELES = append(RELES, Rele)
 	}
+	Env := &models.Environ{Relays: RELES, SensorDHT: sensorDHT}
 
-	Env := &models.Environ{Relays: RELES}
-
-	embd.InitGPIO()
 	router := gin.Default()
 
 	router.GET("/api/relays/:id", RelayHandler(Env))
+	router.GET("/api/dht22", DHT22Handler(Env))
 	router.Run(":8000")
-	//defer embd.CloseGPIO()
 }

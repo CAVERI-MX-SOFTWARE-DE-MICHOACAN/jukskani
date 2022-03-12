@@ -16,3 +16,11 @@ func RelayHandler(Env *models.Environ) gin.HandlerFunc {
 		c.IndentedJSON(http.StatusOK, Env.Relays[relay])
 	}
 }
+func DHT22Handler(Env *models.Environ) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		err := Env.SensorDHT.Read()
+
+		c.IndentedJSON(http.StatusOK, gin.H{"T": Env.SensorDHT.Temperature, "H": Env.SensorDHT.Humidity, "err": err})
+
+	}
+}

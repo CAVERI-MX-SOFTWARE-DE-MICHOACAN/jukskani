@@ -1,5 +1,6 @@
 package models
 
 type Environ struct {
-	Relays []Relay `json:"relays"`
+	Relays    []Relay `json:"relays"`
+	SensorDHT *SensorDHT
 }
