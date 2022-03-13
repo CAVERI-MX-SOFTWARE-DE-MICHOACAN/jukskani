@@ -22,6 +22,9 @@ require (
 )
 
 require (
+	github.com/MichaelS11/go-dht v0.1.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/golang/glog v1.0.0 // indirect
+	github.com/morus12/dht22 v0.0.0-20170211005327-87805f7fca72
+	periph.io/x/periph v3.6.8+incompatible
 )

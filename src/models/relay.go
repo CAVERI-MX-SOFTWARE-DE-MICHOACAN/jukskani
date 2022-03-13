@@ -1,22 +1,30 @@
 package models
 
-import "github.com/kidoman/embd"
+import (
+	"fmt"
+
+	"periph.io/x/periph/conn/gpio"
+	"periph.io/x/periph/conn/gpio/gpioreg"
+)
 
 type Relay struct {
-	Pin_GPIO int `json:"pin_gpio"`
-	State    int `json:"state"`
+	PinName string     `json:"PinName"`
+	State   gpio.Level `json:"state"`
 }
 
-func (R *Relay) Write(state int) {
+func (r *Relay) Write(state bool) {
 
-	pin, err := embd.NewDigitalPin(R.Pin_GPIO)
-	if err != nil {
-		panic(err)
+	pin := gpioreg.ByName(r.PinName)
+
+	if pin == nil {
+		panic(fmt.Sprintf("pin %s is nill", r.PinName))
+	}
+	if state {
+		r.State = gpio.High
+	} else {
+		r.State = gpio.Low
 	}
 
-	pin.SetDirection(embd.Out)
-	pin.Write(state)
-
-	R.State = state
-
+	fmt.Println(r.PinName, pin)
+	pin.Out(r.State)
 }
