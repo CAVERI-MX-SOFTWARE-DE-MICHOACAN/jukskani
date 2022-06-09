@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jukskani</title>
+</head>
+<body>
+    
+        <center>
+            <h1>Temperatura Y Humedad</h1>
+            <table>
+                <thead>
+                    <th>Humedad Relativa</th>
+                    <th>Temperatura</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span id="HR"></span></td>
+                        <td><span id="Temperatura"></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </center>
+
+ 
+    
+    <script>
+        let peticion = new Request("http://192.168.1.70:8000/api/dht22",{
+                headers: new Headers({
+                    'Content-Type':'application/json'
+                }),
+                mode:"same-origin"
+            })
+        let hr_td, temp_td;
+        hr_td = document.querySelector("#HR")
+        temp_td = document.querySelector("#Temperatura")
+        function obtenerHumTemp(){
+            
+            fetch(peticion)
+            .then(res=>{
+                if (res.ok) return res.json()
+            })
+            .then(lectura=>{
+                hr_td.innerHTML=lectura.H+" %HR"
+                temp_td.innerHTML=lectura.T+" *C"
+            })
+            .catch(console.log)
+            .finally(()=>{
+                
+            })
+        
+        }
+        setInterval(obtenerHumTemp, 5e3)
+    </script>
+</body>
+</html>

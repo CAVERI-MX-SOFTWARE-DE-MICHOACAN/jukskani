@@ -8,8 +8,8 @@ import (
 )
 
 type Relay struct {
-	PinName string     `json:"PinName"`
-	State   gpio.Level `json:"state"`
+	PinName string  `json:"PinName"`
+	State   bool	`json:"state"`
 }
 
 func (r *Relay) Write(state bool) {
@@ -20,11 +20,11 @@ func (r *Relay) Write(state bool) {
 		panic(fmt.Sprintf("pin %s is nill", r.PinName))
 	}
 	if state {
-		r.State = gpio.High
+		pin.Out(gpio.High)
 	} else {
-		r.State = gpio.Low
+		pin.Out(gpio.Low)
 	}
-
+	r.State=state
 	fmt.Println(r.PinName, pin)
-	pin.Out(r.State)
+	
 }

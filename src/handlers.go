@@ -3,7 +3,6 @@ package main
 import (
 	"net/http"
 	"strconv"
-
 	"caveri.mx/jukskani/src/models"
 	"github.com/gin-gonic/gin"
 )
@@ -12,9 +11,9 @@ func RelayHandler(Env *models.Environ) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		index, _ := strconv.Atoi(c.Param("id"))
 		state, _ := strconv.ParseBool(c.Query("state"))
-
+	
 		Env.Relays[index].Write(state)
-
+		saveEnviron(Env)
 		c.IndentedJSON(http.StatusOK, Env.Relays[index])
 	}
 }

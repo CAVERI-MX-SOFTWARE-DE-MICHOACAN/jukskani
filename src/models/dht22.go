@@ -7,33 +7,31 @@ import (
 )
 
 type SensorDHT struct {
-	PinName               string
-	Temperature, Humidity float64
-	Sensor                *dht.DHT
+	PinName               string 	`json:PinName`
+	Temperature			  float64 	`json:Temperature`
+	Humidity			  float64 	`json:Humidity`
+	Sensor                *dht.DHT	
 }
 
-func (DHT *SensorDHT) Init(pin string) {
-	DHT.PinName = pin
+func (DHT *SensorDHT) Init() {
 	err := dht.HostInit()
 	if err != nil {
 		fmt.Println("HostInit error:", err)
 		return
 	}
 
-	dht, err := dht.NewDHT("GPIO17", dht.Celsius, "dht22")
+	dht, err := dht.NewDHT(DHT.PinName, dht.Celsius, "")
 	if err != nil {
-		fmt.Println("NewDHT error:", err)
+		fmt.Println("NewDHT error:", err, DHT)
 		return
 	}
 	DHT.Sensor = dht
 
 }
 func (DHT *SensorDHT) Read() error {
-	humidity, temperature, err := DHT.Sensor.Read()
-	if err != nil {
-		return err
-	}
+	humidity, temperature, err := DHT.Sensor.ReadRetry(3)
+
 	DHT.Humidity = humidity
 	DHT.Temperature = temperature
-	return nil
+	return err
 }
