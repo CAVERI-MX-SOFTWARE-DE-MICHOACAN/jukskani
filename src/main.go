@@ -37,19 +37,29 @@ func lcd_print(line1 string, line2 string) {
 	lcd.BacklightOn()
 	lcd.Clear()
 	lcd.Home()
-	lcd.SetPosition(0, 0)
-	fmt.Fprint(lcd, line1)
-	lcd.SetPosition(1, 0)
-	fmt.Fprint(lcd, line2)
+	if len(line1) > 0 {
+		lcd.SetPosition(0, 0)
+		fmt.Fprint(lcd, line1)
+	}
+	if len(line2) > 0 {
+		lcd.SetPosition(1, 0)
+		fmt.Fprint(lcd, line2)
+	}
 }
 
 func readDHT(sensor *models.SensorDHT) {
 	for range time.Tick(5 * time.Second) {
+		now := time.Now().Format("Mon02 Jan 15:04")
 		log.Print("Reading sensor...\t")
+		lcd_print(now, "")
 		err := sensor.Read()
+		if err == nil {
+			lcd_print(now, "DHT22 ERROR")
+			return
+		}
 		Temperature = sensor.Temperature
 		Humidity = sensor.Humidity
-		lcd_print(time.Now().Format("Mon02 Jan 15:04"), fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
+		lcd_print(now, fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
 		log.Println(Temperature, "*C", Humidity, "%HR", "err: ", err)
 
 	}
