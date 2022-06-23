@@ -17,9 +17,9 @@ import (
 
 const TIME_FORMAT = "02 Jan 15:04:05"
 
-var PIN_DHT22 = "GPIO17"
-var PIN2RELES = []int{27, 22, 23, 24, 25, 16, 26, 6}
-var PIN2RELESSTR = []string{"GPIO27", "GPIO22", "GPIO23", "GPIO24", "GPIO25", "GPIO16", "GPIO26", "GPIO6"}
+var PIN_DHT22 string //"GPIO17"
+
+var PIN2RELESSTR []string
 var sensorDHT *models.SensorDHT
 
 var Temperature, Humidity float64
