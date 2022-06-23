@@ -1,0 +1,40 @@
+{
+ "relays": [
+  {
+   "PinName": "GPIO27",
+   "state": false
+  },
+  {
+   "PinName": "GPIO22",
+   "state": true
+  },
+  {
+   "PinName": "GPIO23",
+   "state": true
+  },
+  {
+   "PinName": "GPIO24",
+   "state": true
+  },
+  {
+   "PinName": "GPIO25",
+   "state": true
+  },
+  {
+   "PinName": "GPIO16",
+   "state": true
+  },
+  {
+   "PinName": "GPIO26",
+   "state": true
+  },
+  {
+   "PinName": "GPIO6",
+   "state": true
+  }
+ ],
+ "SensorDHT": {
+  "PinName": "GPIO017",
+  "Sensor": {}
+ }
+}
