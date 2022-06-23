@@ -7,10 +7,10 @@ import (
 )
 
 type SensorDHT struct {
-	PinName               string 	`json:PinName`
-	Temperature			  float64 	`json:Temperature`
-	Humidity			  float64 	`json:Humidity`
-	Sensor                *dht.DHT	
+	PinName     string `json:PinName`
+	Temperature float64
+	Humidity    float64
+	Sensor      *dht.DHT
 }
 
 func (DHT *SensorDHT) Init() {
