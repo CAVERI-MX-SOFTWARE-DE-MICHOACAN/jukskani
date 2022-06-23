@@ -34,7 +34,7 @@ func lcd_print(line1 string, line2 string) {
 	defer i2c.Close()
 	lcd, err := device.NewLcd(i2c, device.LCD_16x2)
 	check(err)
-	//lcd.BacklightOn()
+	lcd.BacklightOn()
 	lcd.Clear()
 	lcd.Home()
 	lcd.SetPosition(0, 0)
