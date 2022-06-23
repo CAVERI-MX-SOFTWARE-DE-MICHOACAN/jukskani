@@ -32,16 +32,17 @@ func check(err error) {
 		log.Fatal(err)
 	}
 }
-func lcd_init() {
+func lcd_init() *device.Lcd {
 	_i2c, err := i2c.NewI2C(0x23, 1)
 	check(err)
 	_lcd, err := device.NewLcd(_i2c, device.LCD_16x2)
 	_lcd.BacklightOn()
 	_lcd.Clear()
 	check(err)
+	return _lcd
 
 }
-func lcd_print(line1 string, line2 string) {
+func lcd_print(_lcd *device.Lcd, line1 string, line2 string) {
 	_lcd.Clear()
 	_lcd.Home()
 	_lcd.SetPosition(0, 0)
@@ -50,10 +51,10 @@ func lcd_print(line1 string, line2 string) {
 	fmt.Fprint(_lcd, line2)
 }
 
-func lcdDisplayRoutine() {
+func lcdDisplayRoutine(lcd *device.Lcd) {
 	for range time.Tick(1 * time.Second) {
 		now := time.Now().Format(TIME_FORMAT)
-		lcd_print(now, fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
+		lcd_print(lcd, now, fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
 	}
 }
 func readDHT(sensor *models.SensorDHT) {
@@ -107,9 +108,9 @@ func initEnviron() *models.Environ {
 func main() {
 
 	log.Println("Init... testing LCD...")
-	lcd_init()
+	lcd := lcd_init()
 	defer _i2c.Close()
-	lcd_print("CAVERI.MX", "JUKSKANI V1.0")
+	lcd_print(lcd, "CAVERI.MX", "JUKSKANI V1.0")
 
 	sign := make(chan os.Signal, 1)
 
@@ -120,7 +121,7 @@ func main() {
 	//embd.InitGPIO()
 	go prepareExit(sign)
 	go readDHT(sensorDHT)
-	go lcdDisplayRoutine()
+	go lcdDisplayRoutine(lcd)
 
 	router := gin.Default()
 
