@@ -34,7 +34,7 @@
   }
  ],
  "SensorDHT": {
-  "PinName": "GPIO017",
+  "PinName": "GPIO17",
   "Sensor": {}
  }
 }

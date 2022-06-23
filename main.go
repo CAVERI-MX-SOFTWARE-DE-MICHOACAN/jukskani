@@ -85,7 +85,7 @@ func initEnviron() *models.Environ {
 	log.Println("Leyendo environ.json...")
 	Env, err := loadEnviron()
 	log.Printf("Environ: %+v \n %+v \n", Env, Env.SensorDHT)
-	sensorDHT = &models.SensorDHT{PinName: PIN_DHT22}
+	sensorDHT = &models.SensorDHT{PinName: Env.SensorDHT.PinName}
 	sensorDHT.Init()
 	if err != nil {
 		panic(err)
