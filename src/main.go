@@ -48,7 +48,7 @@ func readDHT(sensor *models.SensorDHT) {
 	for range time.Tick(5 * time.Second) {
 		now := time.Now().Format("Mon02 Jan 15:04")
 		log.Print("Reading sensor...\t")
-		lcd_print(now, "")
+
 		err := sensor.Read()
 		if err != nil {
 			lcd_print(now, "DHT22 ERROR")
