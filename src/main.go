@@ -25,7 +25,7 @@ var sensorDHT *models.SensorDHT
 var Temperature, Humidity float64
 
 var _i2c *i2c.I2C
-var lcd *device.Lcd
+var _lcd *device.Lcd
 
 func check(err error) {
 	if err != nil {
@@ -35,21 +35,21 @@ func check(err error) {
 func lcd_init() {
 	_i2c, err := i2c.NewI2C(0x23, 1)
 	check(err)
-	lcd, err := device.NewLcd(_i2c, device.LCD_16x2)
-	lcd.BacklightOn()
-	lcd.Clear()
+	_lcd, err := device.NewLcd(_i2c, device.LCD_16x2)
+	_lcd.BacklightOn()
+	_lcd.Clear()
 	check(err)
 
 }
 func lcd_print(line1 string, line2 string) {
-	lcd.Clear()
-	lcd.Home()
-	lcd.SetPosition(0, 0)
-	fmt.Fprint(lcd, line1)
-	lcd.SetPosition(1, 0)
-	fmt.Fprint(lcd, line2)
-
+	_lcd.Clear()
+	_lcd.Home()
+	_lcd.SetPosition(0, 0)
+	fmt.Fprint(_lcd, line1)
+	_lcd.SetPosition(1, 0)
+	fmt.Fprint(_lcd, line2)
 }
+
 func lcdDisplayRoutine() {
 	for range time.Tick(1 * time.Second) {
 		now := time.Now().Format(TIME_FORMAT)
@@ -108,7 +108,7 @@ func main() {
 
 	log.Println("Init... testing LCD...")
 	lcd_init()
-
+	defer _i2c.Close()
 	lcd_print("CAVERI.MX", "JUKSKANI V1.0")
 
 	sign := make(chan os.Signal, 1)
