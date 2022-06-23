@@ -54,7 +54,7 @@ func lcd_print(_lcd *device.Lcd, line1 string, line2 string) {
 func lcdDisplayRoutine(lcd *device.Lcd) {
 	for range time.Tick(1 * time.Second) {
 		now := time.Now().Format(TIME_FORMAT)
-		lcd_print(lcd, now, fmt.Sprintf("%.1f *C %.1f %%HR", Temperature, Humidity))
+		lcd_print(lcd, now, fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
 	}
 }
 func readDHT(sensor *models.SensorDHT, lcd *device.Lcd) {
