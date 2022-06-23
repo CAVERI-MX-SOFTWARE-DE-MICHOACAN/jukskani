@@ -17,9 +17,6 @@ import (
 
 const TIME_FORMAT = "02 Jan 15:04:05"
 
-var PIN_DHT22 = "GPIO17"
-
-var PIN2RELESSTR []string
 var sensorDHT *models.SensorDHT
 
 var Temperature, Humidity float64
@@ -90,19 +87,8 @@ func initEnviron() *models.Environ {
 	if err != nil {
 		panic(err)
 	}
-	if err == nil {
-		for _, Rele := range Env.Relays {
-			Rele.Write(Rele.State)
-		}
-
-	} else {
-		var RELES []models.Relay
-		for _, pin := range PIN2RELESSTR {
-			Rele := models.Relay{PinName: pin}
-			Rele.Write(true)
-			RELES = append(RELES, Rele)
-		}
-		Env = &models.Environ{Relays: RELES, SensorDHT: sensorDHT}
+	for _, Rele := range Env.Relays {
+		Rele.Write(Rele.State)
 	}
 	return Env
 }
