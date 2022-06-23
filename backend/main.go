@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"caveri.mx/jukskani/src/models"
+	"caveri.mx/jukskani/backend/models"
 	device "github.com/d2r2/go-hd44780"
 	"github.com/d2r2/go-i2c"
 	"github.com/gin-gonic/gin"
