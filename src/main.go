@@ -15,7 +15,7 @@ import (
 	_ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
 )
 
-const TIME_FORMAT = "01 Jan 15:04:05"
+const TIME_FORMAT = "02 Jan 15:04:05"
 
 var PIN_DHT22 = "GPIO17"
 var PIN2RELES = []int{27, 22, 23, 24, 25, 16, 26, 6}
