@@ -63,8 +63,7 @@ func readDHT(sensor *models.SensorDHT, lcd *device.Lcd) {
 
 		err := sensor.Read()
 		if err != nil {
-
-			continue
+			log.Println(err)
 		}
 		Temperature = sensor.Temperature
 		Humidity = sensor.Humidity
