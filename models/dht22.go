@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/MichaelS11/go-dht"
@@ -19,7 +20,9 @@ func (DHT *SensorDHT) Init() {
 		fmt.Println("HostInit error:", err)
 		return
 	}
-
+	if DHT.PinName == "" {
+		panic(errors.New("Pin for DHT is nil"))
+	}
 	dht, err := dht.NewDHT(DHT.PinName, dht.Celsius, "")
 	if err != nil {
 		fmt.Println("NewDHT error:", err, DHT)
