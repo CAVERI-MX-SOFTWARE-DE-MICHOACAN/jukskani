@@ -85,6 +85,7 @@ func initEnviron() *models.Environ {
 
 	Env, err := loadEnviron()
 	sensorDHT = Env.SensorDHT
+	log.Println(Env)
 	sensorDHT.Init()
 	log.Println("Environment", Env, err)
 	if err == nil {
