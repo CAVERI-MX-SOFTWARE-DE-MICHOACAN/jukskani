@@ -49,7 +49,7 @@ func readDHT(sensor *models.SensorDHT) {
 		err := sensor.Read()
 		Temperature = sensor.Temperature
 		Humidity = sensor.Humidity
-		lcd_print(time.Now().Format("22-01-02 15:04:05"), fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
+		lcd_print(time.Now().Format("Mon02 Jan 15:04"), fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
 		log.Println(Temperature, "*C", Humidity, "%HR", "err: ", err)
 
 	}
