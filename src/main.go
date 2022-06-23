@@ -108,7 +108,7 @@ func main() {
 
 	log.Println("Init... testing LCD...")
 	lcd_init()
-	defer _i2c.Close()
+
 	lcd_print("CAVERI.MX", "JUKSKANI V1.0")
 
 	sign := make(chan os.Signal, 1)
