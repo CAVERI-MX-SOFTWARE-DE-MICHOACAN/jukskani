@@ -83,9 +83,9 @@ func prepareExit(signal chan os.Signal) {
 }
 func initEnviron() *models.Environ {
 
-	sensorDHT = &models.SensorDHT{PinName: PIN_DHT22}
-	sensorDHT.Init()
 	Env, err := loadEnviron()
+	sensorDHT = Env.SensorDHT
+	sensorDHT.Init()
 	log.Println("Environment", Env, err)
 	if err == nil {
 		for _, Rele := range Env.Relays {
