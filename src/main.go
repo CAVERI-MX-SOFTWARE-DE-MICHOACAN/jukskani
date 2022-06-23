@@ -50,7 +50,7 @@ func readDHT(sensor *models.SensorDHT) {
 		log.Print("Reading sensor...\t")
 		lcd_print(now, "")
 		err := sensor.Read()
-		if err == nil {
+		if err != nil {
 			lcd_print(now, "DHT22 ERROR")
 			continue
 		}
