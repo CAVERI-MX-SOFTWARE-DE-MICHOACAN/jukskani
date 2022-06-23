@@ -43,7 +43,7 @@ func lcd_init() *device.Lcd {
 
 }
 func lcd_print(_lcd *device.Lcd, line1 string, line2 string) {
-	_lcd.Clear()
+	//_lcd.Clear()
 	_lcd.Home()
 	_lcd.SetPosition(0, 0)
 	fmt.Fprint(_lcd, line1)
