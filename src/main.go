@@ -57,7 +57,7 @@ func lcdDisplayRoutine(lcd *device.Lcd) {
 		lcd_print(lcd, now, fmt.Sprintf("%.2f *C %.2f %%HR", Temperature, Humidity))
 	}
 }
-func readDHT(sensor *models.SensorDHT) {
+func readDHT(sensor *models.SensorDHT, lcd *device.Lcd) {
 	for range time.Tick(5 * time.Second) {
 		now := time.Now().Format(TIME_FORMAT)
 		log.Print("Reading sensor...\t")
@@ -120,7 +120,7 @@ func main() {
 
 	//embd.InitGPIO()
 	go prepareExit(sign)
-	go readDHT(sensorDHT)
+	go readDHT(sensorDHT, lcd)
 	go lcdDisplayRoutine(lcd)
 
 	router := gin.Default()
