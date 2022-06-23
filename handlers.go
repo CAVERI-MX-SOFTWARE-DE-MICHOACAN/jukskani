@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"caveri.mx/jukskani/backend/models"
+	"caveri.mx/jukskani/models"
 	"github.com/gin-gonic/gin"
 )
 

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"caveri.mx/jukskani/backend/models"
+	"caveri.mx/jukskani/models"
 )
 
 func loadEnviron() (*models.Environ, error) {
