@@ -37,14 +37,11 @@ func lcd_print(line1 string, line2 string) {
 	lcd.BacklightOn()
 	lcd.Clear()
 	lcd.Home()
-	if len(line1) > 0 {
-		lcd.SetPosition(0, 0)
-		fmt.Fprint(lcd, line1)
-	}
-	if len(line2) > 0 {
-		lcd.SetPosition(1, 0)
-		fmt.Fprint(lcd, line2)
-	}
+	lcd.SetPosition(0, 0)
+	fmt.Fprint(lcd, line1)
+	lcd.SetPosition(1, 0)
+	fmt.Fprint(lcd, line2)
+
 }
 
 func readDHT(sensor *models.SensorDHT) {
