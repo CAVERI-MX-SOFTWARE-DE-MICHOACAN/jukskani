@@ -7,11 +7,13 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
-
+	device "github.com/d2r2/go-hd44780"
+	i2c "github.com/d2r2/go-i2c"
 	"caveri.mx/jukskani/src/models"
 	"github.com/gin-gonic/gin"
 	_ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
 )
+
 
 var PIN_DHT22 = "GPIO17"
 var PIN2RELES = []int{27, 22, 23, 24, 25, 16, 26, 6}
@@ -19,6 +21,35 @@ var PIN2RELESSTR = []string{"GPIO27", "GPIO22", "GPIO23", "GPIO24", "GPIO25", "G
 var sensorDHT  *models.SensorDHT
 
 var Temperature, Humidity float64
+
+func check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+
+func lcd_print(string [] line1) {
+	i2c, err := i2c.NewI2C(0x23, 1)
+	check(err)
+	defer i2c.Close()
+	lcd, err := device.NewLcd(i2c, device.LCD_16x2)
+	check(err)
+	lcd.BacklightOn()
+	lcd.Clear()
+	for {
+		lcd.Home()
+		t := time.Now()
+		lcd.SetPosition(0, 0)
+		fmt.Fprint(lcd, t.Format("Monday Jan 2"))
+		lcd.SetPosition(1, 0)
+		fmt.Fprint(lcd, t.Format("15:04:05 2006"))
+		//		lcd.SetPosition(4, 0)
+		//		fmt.Fprint(lcd, "i2c, VGA, and Go")
+		time.Sleep(333 * time.Millisecond)
+	}
+  }
+
 func readDHT(sensor *models.SensorDHT) {
 
 	for range time.Tick(5 * time.Second) {
@@ -61,9 +92,15 @@ func initEnviron() *models.Environ{
 		Env = &models.Environ{Relays: RELES, SensorDHT: sensorDHT}
 	}
 	return Env
-
 }
+
+
+
 func main() {
+
+	lcd_test()
+	log.Println("Init...")
+
 	
 	sign := make(chan os.Signal, 1)
 
@@ -83,6 +120,10 @@ func main() {
 	router.Static("/public", "./public")
 	router.GET("/api/relays/:id", RelayHandler(Env))
 	router.GET("/api/dht22", DHT22Handler(Env))
-	router.Run(":8000")
+
+	log.Println("Listening in port 80")
+
+	router.Run(":80")
+
 
 }
