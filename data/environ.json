@@ -1,5 +1,5 @@
 {
- "relays": [
+ "Relays": [
   {
    "PinName": "GPIO27",
    "state": false
@@ -35,8 +35,6 @@
  ],
  "SensorDHT": {
   "PinName": "GPIO017",
-  "Temperature": 24.3,
-  "Humidity": 91.1,
   "Sensor": {}
  }
 }

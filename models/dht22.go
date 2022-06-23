@@ -7,7 +7,7 @@ import (
 )
 
 type SensorDHT struct {
-	PinName     string `json:PinName`
+	PinName     string `json:"PinName"`
 	Temperature float64
 	Humidity    float64
 	Sensor      *dht.DHT
