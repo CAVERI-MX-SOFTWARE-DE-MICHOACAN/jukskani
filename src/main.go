@@ -106,6 +106,6 @@ func main() {
 	router.GET("/api/relays/:id", RelayHandler(Env))
 	router.GET("/api/dht22", DHT22Handler(Env))
 
-	router.Run(":80")
+	router.Run(":8080")
 
 }
