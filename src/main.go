@@ -59,12 +59,11 @@ func lcdDisplayRoutine(lcd *device.Lcd) {
 }
 func readDHT(sensor *models.SensorDHT, lcd *device.Lcd) {
 	for range time.Tick(5 * time.Second) {
-		now := time.Now().Format(TIME_FORMAT)
 		log.Print("Reading sensor...\t")
 
 		err := sensor.Read()
 		if err != nil {
-			lcd_print(lcd, now, "DHT22 ERROR")
+
 			continue
 		}
 		Temperature = sensor.Temperature
