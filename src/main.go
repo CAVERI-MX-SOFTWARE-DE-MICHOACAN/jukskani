@@ -10,7 +10,7 @@ import (
 
 	"caveri.mx/jukskani/src/models"
 	device "github.com/d2r2/go-hd44780"
-	i2c "github.com/d2r2/go-i2c"
+	"github.com/d2r2/go-i2c"
 	"github.com/gin-gonic/gin"
 	_ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
 )
@@ -24,19 +24,24 @@ var sensorDHT *models.SensorDHT
 
 var Temperature, Humidity float64
 
+var _i2c *i2c.I2C
+var lcd *device.Lcd
+
 func check(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
 }
-
-func lcd_print(line1 string, line2 string) {
-	i2c, err := i2c.NewI2C(0x23, 1)
+func lcd_init() {
+	_i2c, err := i2c.NewI2C(0x23, 1)
 	check(err)
-	defer i2c.Close()
-	lcd, err := device.NewLcd(i2c, device.LCD_16x2)
-	check(err)
+	lcd, err := device.NewLcd(_i2c, device.LCD_16x2)
 	lcd.BacklightOn()
+	lcd.Clear()
+	check(err)
+
+}
+func lcd_print(line1 string, line2 string) {
 	lcd.Clear()
 	lcd.Home()
 	lcd.SetPosition(0, 0)
@@ -100,7 +105,10 @@ func initEnviron() *models.Environ {
 }
 
 func main() {
+
 	log.Println("Init... testing LCD...")
+	lcd_init()
+	defer _i2c.Close()
 	lcd_print("CAVERI.MX", "JUKSKANI V1.0")
 
 	sign := make(chan os.Signal, 1)
