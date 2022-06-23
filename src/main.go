@@ -28,8 +28,7 @@ func check(err error) {
 	}
 }
 
-
-func lcd_print(string [] line1) {
+func lcd_print(string line1, string line2) {
 	i2c, err := i2c.NewI2C(0x23, 1)
 	check(err)
 	defer i2c.Close()
@@ -37,27 +36,20 @@ func lcd_print(string [] line1) {
 	check(err)
 	lcd.BacklightOn()
 	lcd.Clear()
-	for {
-		lcd.Home()
-		t := time.Now()
-		lcd.SetPosition(0, 0)
-		fmt.Fprint(lcd, t.Format("Monday Jan 2"))
-		lcd.SetPosition(1, 0)
-		fmt.Fprint(lcd, t.Format("15:04:05 2006"))
-		//		lcd.SetPosition(4, 0)
-		//		fmt.Fprint(lcd, "i2c, VGA, and Go")
-		time.Sleep(333 * time.Millisecond)
-	}
+	lcd.Home()
+	lcd.SetPosition(0, 0)
+	fmt.Fprint(lcd, line1)
+	lcd.SetPosition(1, 0)
+	fmt.Fprint(lcd, line2)
   }
 
 func readDHT(sensor *models.SensorDHT) {
-
 	for range time.Tick(5 * time.Second) {
 		log.Print("Reading sensor...\t")
 		err := sensor.Read()
-
 		Temperature = sensor.Temperature
 		Humidity = sensor.Humidity
+		lcd_print(time.Now().Format("22-01-02 15:04:05"),fmt.FPrint("%.2f *C %.2f %HR"))
 		log.Println(Temperature, "*C", Humidity, "%HR", "err: ", err)
 	}
 }
@@ -97,10 +89,8 @@ func initEnviron() *models.Environ{
 
 
 func main() {
-
-	lcd_test()
-	log.Println("Init...")
-
+	log.Println("Init... testing LCD...")
+	lcd_print("CAVERI.MX", "JUKSKANI V1.0")
 	
 	sign := make(chan os.Signal, 1)
 
@@ -120,8 +110,6 @@ func main() {
 	router.Static("/public", "./public")
 	router.GET("/api/relays/:id", RelayHandler(Env))
 	router.GET("/api/dht22", DHT22Handler(Env))
-
-	log.Println("Listening in port 80")
 
 	router.Run(":80")
 
