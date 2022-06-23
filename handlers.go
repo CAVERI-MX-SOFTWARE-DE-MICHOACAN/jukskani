@@ -1,6 +1,8 @@
 package main
 
 import (
+	"errors"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -14,13 +16,17 @@ import (
  identificado con el parametro id en la ruta, por ejemplo:
  curl http://127.0.0.1:8080/api/relays/0?state=1
  apagará el primer relevador registrado en el
- archivo environ.json
+ archivo environ.json.
 */
 func RelayHandler(Env *models.Environ) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		index, _ := strconv.Atoi(c.Param("id"))
 		state, _ := strconv.ParseBool(c.Query("state"))
-
+		if index >= len(Env.Relays) {
+			c.IndentedJSON(
+				http.StatusBadRequest,
+				errors.New(fmt.Sprintf("Index del relevador fuera de rango permitido [%d, %d].", 0, len(Env.Relays)-1)))
+		}
 		Env.Relays[index].Write(state)
 		saveEnviron(Env)
 		c.IndentedJSON(http.StatusOK, Env.Relays[index])
