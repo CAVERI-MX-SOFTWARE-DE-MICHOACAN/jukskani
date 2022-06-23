@@ -28,7 +28,7 @@ func check(err error) {
 	}
 }
 
-func lcd_print(string line1, string line2) {
+func lcd_print( line1 string, line2 string) {
 	i2c, err := i2c.NewI2C(0x23, 1)
 	check(err)
 	defer i2c.Close()
