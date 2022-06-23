@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
@@ -23,13 +22,13 @@ func RelayHandler(Env *models.Environ) gin.HandlerFunc {
 		index, _ := strconv.Atoi(c.Param("id"))
 		state, _ := strconv.ParseBool(c.Query("state"))
 		if index >= len(Env.Relays) {
-			c.IndentedJSON(
-				http.StatusBadRequest,
-				errors.New(fmt.Sprintf("Index del relevador fuera de rango permitido [%d, %d].", 0, len(Env.Relays)-1)))
+			c.Status(http.StatusBadRequest)
+			fmt.Fprintf(c.Writer, "Index del relevador fuera de rango permitido [%d, %d].", 0, len(Env.Relays)-1)
+		} else {
+			Env.Relays[index].Write(state)
+			saveEnviron(Env)
+			c.IndentedJSON(http.StatusOK, Env.Relays[index])
 		}
-		Env.Relays[index].Write(state)
-		saveEnviron(Env)
-		c.IndentedJSON(http.StatusOK, Env.Relays[index])
 	}
 }
 func DHT22Handler(Env *models.Environ) gin.HandlerFunc {
