@@ -112,6 +112,7 @@ func main() {
 	//embd.InitGPIO()
 	go prepareExit(sign)
 	go readDHT(sensorDHT)
+	go lcdDisplayRoutine()
 
 	router := gin.Default()
 
