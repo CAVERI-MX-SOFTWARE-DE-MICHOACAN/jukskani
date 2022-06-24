@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	"caveri.mx/jukskani/models"
@@ -15,7 +16,7 @@ func loadEnviron() *models.Environ {
 		panic(err)
 	}
 	environ_file_path := fmt.Sprintf("%s/data/environ.json", wd)
-	fmt.Println("ENVIRON_PATH", environ_file_path)
+	log.Println("ENVIRON_PATH", environ_file_path)
 	content, err := ioutil.ReadFile(environ_file_path)
 	if err != nil {
 		panic(err)
