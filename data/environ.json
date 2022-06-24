@@ -38,13 +38,13 @@
   "Sensor": {}
  },
 "RelayCronTasks":[
- {
-    "CronSpec":"@every 1s",
+ {              
+    "CronSpec":"*/10 * * * * *",
     "RelayIndex":0,
     "State":false
  },
  {
-    "CronSpec":"@every 2s",
+    "CronSpec":"*/20 * * * *",
     "RelayIndex":0,
     "State":true
  }
