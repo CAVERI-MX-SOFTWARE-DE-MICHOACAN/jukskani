@@ -2,13 +2,19 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"os"
 
 	"caveri.mx/jukskani/models"
 )
 
 func loadEnviron() (*models.Environ, error) {
-	content, err := ioutil.ReadFile("./data/environ.json")
+	wd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	content, err := ioutil.ReadFile(fmt.Sprintf("%s/data/environ.json", wd))
 	if err != nil {
 		return &models.Environ{}, err
 	}
