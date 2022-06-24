@@ -39,13 +39,8 @@
  },
 "RelayCronTasks":[
  {              
-    "CronSpec":"0 30 * * * *",
+    "CronSpec":"0 32 * * * *",
     "RelayIndex":2,
-    "State":false
- },
- {
-    "CronSpec":"*/20 * * * *",
-    "RelayIndex":3,
     "State":false
  }
 
