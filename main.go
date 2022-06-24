@@ -30,6 +30,7 @@ func initCronTasks(Env *models.Environ) {
 	Cron = cron.New()
 	for _, task := range Env.RelayCronTasks {
 		Cron.AddFunc(task.CronSpec, func() {
+			log.Println("\n\n\nCRON TASK!\n\n\n", task.RelayIndex, task.State)
 			Env.Relays[task.RelayIndex].Write(task.State)
 		})
 	}

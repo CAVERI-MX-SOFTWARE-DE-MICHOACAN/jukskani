@@ -8,8 +8,8 @@ import (
 )
 
 type Relay struct {
-	PinName string  `json:"PinName"`
-	State   bool	`json:"state"`
+	PinName string `json:"PinName"`
+	State   bool   `json:"state"`
 }
 
 func (r *Relay) Write(state bool) {
@@ -24,7 +24,6 @@ func (r *Relay) Write(state bool) {
 	} else {
 		pin.Out(gpio.Low)
 	}
-	r.State=state
-	fmt.Println(r.PinName, pin)
-	
+	r.State = state
+
 }
