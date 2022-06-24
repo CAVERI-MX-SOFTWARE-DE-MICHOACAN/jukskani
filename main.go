@@ -13,6 +13,7 @@ import (
 	"github.com/d2r2/go-i2c"
 	"github.com/gin-gonic/gin"
 	_ "github.com/kidoman/embd/host/rpi" // This loads the RPi driver
+	"github.com/robfig/cron"
 )
 
 const TIME_FORMAT = "02 Jan 15:04:05"
@@ -23,6 +24,17 @@ var Temperature, Humidity float64
 
 var _i2c *i2c.I2C
 var _lcd *device.Lcd
+var Cron *cron.Cron
+
+func initCronTasks(Env *models.Environ) {
+	Cron = cron.New()
+	for _, task := range Env.RelayCronTasks {
+		Cron.AddFunc(task.CronSpec, func() {
+			Env.Relays[task.RelayIndex].Write(task.State)
+		})
+	}
+	Cron.Start()
+}
 
 func check(err error) {
 	if err != nil {
@@ -107,6 +119,7 @@ func main() {
 	Env := initEnviron()
 
 	//embd.InitGPIO()
+	go initCronTasks(Env)
 	go prepareExit(sign)
 	go readDHT(sensorDHT, lcd)
 	go lcdDisplayRoutine(lcd)

@@ -36,5 +36,18 @@
  "SensorDHT": {
   "PinName": "GPIO17",
   "Sensor": {}
+ },
+"RelayCronTasks":[
+ {
+    "CronSpec":"@every 1s",
+    "RelayIndex":0,
+    "State":false
+ },
+ {
+    "CronSpec":"@every 2s",
+    "RelayIndex":0,
+    "State":true
  }
+
+]
 }
