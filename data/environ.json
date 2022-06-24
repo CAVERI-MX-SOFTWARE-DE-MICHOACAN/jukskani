@@ -45,8 +45,8 @@
  },
  {
     "CronSpec":"*/20 * * * *",
-    "RelayIndex":2,
-    "State":true
+    "RelayIndex":3,
+    "State":false
  }
 
 ]
