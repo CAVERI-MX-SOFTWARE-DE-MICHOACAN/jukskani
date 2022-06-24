@@ -2,7 +2,7 @@
  "Relays": [
   {
    "PinName": "GPIO27",
-   "state": false
+   "state": true
   },
   {
    "PinName": "GPIO22",
