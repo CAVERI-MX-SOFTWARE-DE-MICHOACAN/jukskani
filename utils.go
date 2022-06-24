@@ -14,7 +14,9 @@ func loadEnviron() *models.Environ {
 	if err != nil {
 		panic(err)
 	}
-	content, err := ioutil.ReadFile(fmt.Sprintf("%s/data/environ.json", wd))
+	environ_file_path := fmt.Sprintf("%s/data/environ.json", wd)
+	fmt.Println("ENVIRON_PATH", environ_file_path)
+	content, err := ioutil.ReadFile(environ_file_path)
 	if err != nil {
 		panic(err)
 	}
