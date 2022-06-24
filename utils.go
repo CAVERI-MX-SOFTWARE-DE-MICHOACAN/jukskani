@@ -9,7 +9,7 @@ import (
 	"caveri.mx/jukskani/models"
 )
 
-func loadEnviron() (*models.Environ, error) {
+func loadEnviron() *models.Environ {
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)
@@ -20,7 +20,7 @@ func loadEnviron() (*models.Environ, error) {
 	}
 	Env := models.Environ{}
 	_ = json.Unmarshal([]byte(content), &Env)
-	return &Env, nil
+	return &Env
 }
 func saveEnviron(Env *models.Environ) {
 	content, _ := json.MarshalIndent(Env, "", " ")
