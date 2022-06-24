@@ -6,15 +6,18 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 
 	"caveri.mx/jukskani/models"
 )
 
 func loadEnviron() *models.Environ {
-	wd, err := os.Getwd()
+	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
+	wd := filepath.Dir(ex)
+
 	environ_file_path := fmt.Sprintf("%s/data/environ.json", wd)
 	log.Println("ENVIRON_PATH", environ_file_path)
 	content, err := ioutil.ReadFile(environ_file_path)
