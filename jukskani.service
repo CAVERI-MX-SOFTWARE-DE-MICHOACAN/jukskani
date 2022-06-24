@@ -3,6 +3,7 @@ Description=CONTORL DE INVERNADERO - CAVERI.MX
 After=multi-user.target
 [Service]
 Type=idle
-ExecStart=cd /home/pi/jukskani/ && ./jukskani
+ExecStart=cd /home/pi/jukskani/
+ExecStart=jukskani
 [Install]
 WantedBy=multi-user.target
