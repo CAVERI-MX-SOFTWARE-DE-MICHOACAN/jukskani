@@ -35,7 +35,7 @@ func DHT22Handler(Env *models.Environ) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//err := Env.SensorDHT.Read()
 
-		c.IndentedJSON(http.StatusOK, gin.H{"T": Env.SensorDHT.Temperature, "H": Env.SensorDHT.Humidity})
+		c.IndentedJSON(http.StatusOK, gin.H{"T": Env.SensorDHT.Temperature, "H": Env.SensorDHT.Humidity, "LastRead": Env.SensorDHT.LastRead})
 
 	}
 }
