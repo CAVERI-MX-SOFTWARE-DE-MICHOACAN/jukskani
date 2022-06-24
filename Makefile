@@ -1,5 +1,5 @@
 config:
-    cp data\environ.example.json data\environ.json
+	cp data\environ.example.json data\environ.json
 install:
 	echo "Building..."
 	go build .
