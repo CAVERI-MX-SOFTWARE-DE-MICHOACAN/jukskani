@@ -16,7 +16,7 @@ func loadEnviron() (*models.Environ, error) {
 	}
 	content, err := ioutil.ReadFile(fmt.Sprintf("%s/data/environ.json", wd))
 	if err != nil {
-		return &models.Environ{}, err
+		panic(err)
 	}
 	Env := models.Environ{}
 	_ = json.Unmarshal([]byte(content), &Env)
