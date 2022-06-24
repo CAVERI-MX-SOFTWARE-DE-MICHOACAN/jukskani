@@ -44,9 +44,9 @@
     "State":false
  },
  {              
-    "CronSpec":"* 0 * * * *",
+    "CronSpec":"* 5 * * * *",
     "RelayIndex":2,
-    "State":false
+    "State":true
  }
 
 ]
