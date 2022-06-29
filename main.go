@@ -98,7 +98,7 @@ func initEnviron() *models.Environ {
 }
 
 func main() {
-
+	Cron = cron.New()
 	log.Println("Init... testing LCD...")
 	lcd := lcd_init()
 	defer _i2c.Close()
