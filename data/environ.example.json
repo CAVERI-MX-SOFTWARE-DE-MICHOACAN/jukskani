@@ -35,7 +35,23 @@
     ],
     "SensorDHT": {
      "PinName": "GPIO17",
+     "Temperature": 22.8,
+     "Humidity": 99.9,
+     "LastRead": "2022-06-29T15:21:29.871363994-05:00",
      "Sensor": {}
     },
-   "RelayCronTasks":[]
+    "RelayCronTasks": [
+     {
+        "Name":"Apaga",
+      "CronSpec": "10,30,50 * * * * *",
+      "RelayIndex": 0,
+      "State": true
+     },
+     {
+        "Name":"Enciende",
+      "CronSpec": "0,20,40 * * * * *",
+      "RelayIndex": 0,
+      "State": false
+     }
+    ]
    }
