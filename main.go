@@ -95,7 +95,6 @@ func initEnviron() *models.Environ {
 	log.Println("Leyendo environ.json...")
 	Env := loadEnviron()
 	log.Printf("Environ: %+v \n %+v \n", Env, Env.SensorDHT)
-	os.Exit(1)
 	sensorDHT = Env.SensorDHT
 	sensorDHT.Init()
 
