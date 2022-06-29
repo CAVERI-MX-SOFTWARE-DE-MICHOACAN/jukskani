@@ -37,6 +37,7 @@ func DeleteTaskCronHandler(Env *models.Environ, Cron *cron.Cron) gin.HandlerFunc
 			c.IndentedJSON(http.StatusBadRequest, errors.New("Id de la tarea fuera de rango").Error())
 		}
 		deleteCronTask(Env, Cron, index)
+
 		fmt.Fprint(c.Writer, "OK")
 	}
 }
