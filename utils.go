@@ -18,7 +18,7 @@ func loadEnviron() *models.Environ {
 	}
 	wd := filepath.Dir(ex)
 
-	environ_file_path := fmt.Sprintf(os.Getenv("ENVIRON"), wd)
+	environ_file_path := fmt.Sprintf(os.Getenv("ENVIRON_JSON"), wd)
 	log.Println("Reading ENVIRON_PATH", environ_file_path)
 	content, err := ioutil.ReadFile(environ_file_path)
 	if err != nil {
@@ -30,5 +30,5 @@ func loadEnviron() *models.Environ {
 }
 func saveEnviron(Env *models.Environ) {
 	content, _ := json.MarshalIndent(Env, "", " ")
-	_ = ioutil.WriteFile(os.Getenv("ENVIRON"), content, 0644)
+	_ = ioutil.WriteFile(os.Getenv("ENVIRON_JSON"), content, 0644)
 }
