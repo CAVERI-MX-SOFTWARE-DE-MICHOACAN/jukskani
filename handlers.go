@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"log"
 	"net/http"
-	"strconv"
 
 	"caveri.mx/jukskani/models"
 	"github.com/gin-gonic/gin"
@@ -19,16 +19,24 @@ import (
 */
 func RelayHandler(Env *models.Environ) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		index, _ := strconv.Atoi(c.Param("id"))
-		state, _ := strconv.ParseBool(c.Query("state"))
-		if index >= len(Env.Relays) {
-			c.Status(http.StatusBadRequest)
-			fmt.Fprintf(c.Writer, "Index del relevador fuera de rango permitido [%d, %d].", 0, len(Env.Relays)-1)
-		} else {
-			Env.Relays[index].Write(state)
-			saveEnviron(Env)
-			c.IndentedJSON(http.StatusOK, Env.Relays[index])
+		var v interface{}
+		err := json.NewDecoder(c.Request.Body).Decode(&v)
+		if err != nil {
+			log.Println("BAD_REQUEST", err)
+			c.IndentedJSON(http.StatusBadRequest, err)
 		}
+		c.IndentedJSON(http.StatusOK, v)
+		// index, _ := strconv.Atoi(c.Param("id"))
+		// state, _ := strconv.ParseBool(c.Query("state"))
+
+		// if index >= len(Env.Relays) {
+		// 	c.Status(http.StatusBadRequest)
+		// 	fmt.Fprintf(c.Writer, "Index del relevador fuera de rango permitido [%d, %d].", 0, len(Env.Relays)-1)
+		// } else {
+		// 	Env.Relays[index].Write(state)
+		// 	saveEnviron(Env)
+		// 	c.IndentedJSON(http.StatusOK, Env.Relays[index])
+		// }
 	}
 }
 func DHT22Handler(Env *models.Environ) gin.HandlerFunc {

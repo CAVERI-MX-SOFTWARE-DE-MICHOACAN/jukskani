@@ -130,7 +130,7 @@ func main() {
 	router := gin.Default()
 
 	router.Static("/public", "./public")
-	router.GET("/api/relays/:id", RelayHandler(Env))
+	router.POST("/api/relays/:id", RelayHandler(Env))
 	router.GET("/api/dht22", DHT22Handler(Env))
 
 	router.Run(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))
