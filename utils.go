@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -18,7 +17,7 @@ func loadEnviron() *models.Environ {
 	}
 	wd := filepath.Dir(ex)
 
-	environ_file_path := fmt.Sprintf(os.Getenv("ENVIRON_JSON"), wd)
+	environ_file_path := os.Getenv("ENVIRON_JSON")
 	log.Println("Reading ENVIRON_PATH", environ_file_path)
 	content, err := ioutil.ReadFile(environ_file_path)
 	if err != nil {
