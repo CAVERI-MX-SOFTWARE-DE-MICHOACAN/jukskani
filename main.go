@@ -26,17 +26,6 @@ var _i2c *i2c.I2C
 var _lcd *device.Lcd
 var Cron *cron.Cron
 
-func initCronTasks(Env *models.Environ) {
-	Cron = cron.New()
-	for _, task := range Env.RelayCronTasks {
-		Cron.AddFunc(task.CronSpec, func() {
-			log.Println("\n\n\nCRON TASK!\n\n\n", task.RelayIndex, task.State)
-			Env.Relays[task.RelayIndex].Write(task.State)
-		})
-	}
-	Cron.Start()
-}
-
 func check(err error) {
 	if err != nil {
 		log.Fatal(err)
@@ -131,6 +120,7 @@ func main() {
 
 	router.Static("/public", "./public")
 	router.POST("/api/relays/:id", RelayHandler(Env))
+	router.POST("/api/cron", CronHandler(Env))
 	router.GET("/api/dht22", DHT22Handler(Env))
 
 	router.Run(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))

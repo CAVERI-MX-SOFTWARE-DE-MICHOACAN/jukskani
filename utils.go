@@ -7,7 +7,27 @@ import (
 	"os"
 
 	"caveri.mx/jukskani/models"
+	"github.com/robfig/cron"
 )
+
+func initCronTasks(Env *models.Environ) {
+	Cron = cron.New()
+	for _, task := range Env.RelayCronTasks {
+		Cron.AddFunc(task.CronSpec, func() {
+			log.Println("\n\n\nCRON TASK!\n\n\n", task.RelayIndex, task.State)
+			Env.Relays[task.RelayIndex].Write(task.State)
+		})
+	}
+	Cron.Start()
+}
+func initCronTask(Env *models.Environ, task models.RelayCronTasks) {
+	Cron = cron.New()
+	Cron.AddFunc(task.CronSpec, func() {
+		log.Println("\n\n\nCRON TASK!\n\n\n", task.RelayIndex, task.State)
+		Env.Relays[task.RelayIndex].Write(task.State)
+	})
+	Cron.Start()
+}
 
 func loadEnviron() *models.Environ {
 	environ_file_path := os.Getenv("ENVIRON_JSON")

@@ -11,6 +11,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func CronHandler(Env *models.Environ) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var task models.RelayCronTasks
+		err := json.NewDecoder(c.Request.Body).Decode(&task)
+		if err != nil {
+			log.Println("BAD_REQUEST", err)
+			c.IndentedJSON(http.StatusBadRequest, err)
+		}
+		Env.RelayCronTasks = append(Env.RelayCronTasks, task)
+		saveEnviron(Env)
+		initCronTask(Env, task)
+		c.Status(http.StatusAccepted)
+		fmt.Fprint(c.Writer, "OK")
+	}
+}
+
 /*
  Esta funcion cambia el estado de los relevadores.
  El valor state=1|0 donde 0 enciende/apaga el relevador
