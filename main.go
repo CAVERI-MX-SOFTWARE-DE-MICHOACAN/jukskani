@@ -111,7 +111,7 @@ func main() {
 	Env := initEnviron()
 
 	//embd.InitGPIO()
-	go initCronTasks(Env, Cron)
+	initCronTasks(Env, Cron)
 	go prepareExit(sign)
 	go readDHT(sensorDHT)
 	go lcdDisplayRoutine(lcd)
