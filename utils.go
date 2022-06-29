@@ -33,6 +33,7 @@ func addCronTask(Env *models.Environ, Cron *cron.Cron, task models.RelayCronTask
 }
 func deleteCronTask(Env *models.Environ, Cron *cron.Cron, index int) {
 	Env.RelayCronTasks = append(Env.RelayCronTasks[:index], Env.RelayCronTasks[index+1:]...)
+	saveEnviron(Env)
 	Cron.Stop()
 	initCronTasks(Env, Cron)
 }
