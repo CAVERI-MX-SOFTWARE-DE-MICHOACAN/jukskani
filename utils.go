@@ -18,6 +18,7 @@ func initCronTasks(Env *models.Environ, Cron *cron.Cron) {
 		Cron.AddFunc(task.CronSpec, func() {
 			log.Println("\n\n\nCRON TASK!", task.Name, task.RelayIndex, task.State, " \n\n\n")
 			Env.Relays[task.RelayIndex].Write(task.State)
+			saveEnviron(Env)
 		})
 	}
 	Cron.Start()
@@ -28,6 +29,7 @@ func addCronTask(Env *models.Environ, Cron *cron.Cron, task models.RelayCronTask
 	Cron.AddFunc(task.CronSpec, func() {
 		log.Println("\n\n\nCRON TASK!\n\n\n", task.RelayIndex, task.State)
 		Env.Relays[task.RelayIndex].Write(task.State)
+		saveEnviron(Env)
 	})
 	Cron.Start()
 }
