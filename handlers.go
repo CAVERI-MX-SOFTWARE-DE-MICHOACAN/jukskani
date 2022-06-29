@@ -34,7 +34,7 @@ func DeleteTaskCronHandler(Env *models.Environ, Cron *cron.Cron) gin.HandlerFunc
 		if err != nil {
 			c.IndentedJSON(http.StatusBadRequest, err)
 		} else if index < 0 || index >= len(Env.RelayCronTasks) {
-			c.IndentedJSON(http.StatusBadRequest, errors.New("Id de la tarea fuera de rango"))
+			c.IndentedJSON(http.StatusBadRequest, errors.New("Id de la tarea fuera de rango").Error())
 		}
 		deleteCronTask(Env, Cron, index)
 		fmt.Fprint(c.Writer, "OK")
