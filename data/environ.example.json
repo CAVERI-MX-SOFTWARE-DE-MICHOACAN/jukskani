@@ -48,7 +48,7 @@
       "State": true
      },
      {
-        "Name":"Enciende",
+      "Name":"Enciende",
       "CronSpec": "0,20,40 * * * * *",
       "RelayIndex": 0,
       "State": false
