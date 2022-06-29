@@ -10,7 +10,7 @@ import (
 	"github.com/robfig/cron"
 )
 
-func initCronTasks(Env *models.Environ) {
+func initCronTasks(Env *models.Environ, Cron *cron.Cron) {
 	Cron = cron.New()
 	for _, _task := range Env.RelayCronTasks {
 		task := _task
@@ -23,13 +23,18 @@ func initCronTasks(Env *models.Environ) {
 	Cron.Start()
 
 }
-func initCronTask(Env *models.Environ, task models.RelayCronTasks) {
-	Cron = cron.New()
+func addCronTask(Env *models.Environ, Cron *cron.Cron, task models.RelayCronTasks) {
+
 	Cron.AddFunc(task.CronSpec, func() {
 		log.Println("\n\n\nCRON TASK!\n\n\n", task.RelayIndex, task.State)
 		Env.Relays[task.RelayIndex].Write(task.State)
 	})
 	Cron.Start()
+}
+func deleteCronTask(Env *models.Environ, Cron *cron.Cron, index int) {
+	Env.RelayCronTasks = append(Env.RelayCronTasks[:index], Env.RelayCronTasks[index+1:]...)
+	Cron.Stop()
+	initCronTasks(Env, Cron)
 }
 
 func loadEnviron() *models.Environ {

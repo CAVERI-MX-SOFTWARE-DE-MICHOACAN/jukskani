@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -9,9 +10,10 @@ import (
 
 	"caveri.mx/jukskani/models"
 	"github.com/gin-gonic/gin"
+	"github.com/robfig/cron"
 )
 
-func CronHandler(Env *models.Environ) gin.HandlerFunc {
+func AddTaskCronHandler(Env *models.Environ, Cron *cron.Cron) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var task models.RelayCronTasks
 		err := json.NewDecoder(c.Request.Body).Decode(&task)
@@ -21,8 +23,20 @@ func CronHandler(Env *models.Environ) gin.HandlerFunc {
 		}
 		Env.RelayCronTasks = append(Env.RelayCronTasks, task)
 		saveEnviron(Env)
-		initCronTask(Env, task)
+		addCronTask(Env, Cron, task)
 		c.Status(http.StatusAccepted)
+		fmt.Fprint(c.Writer, "OK")
+	}
+}
+func DeleteTaskCronHandler(Env *models.Environ, Cron *cron.Cron) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		index, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.IndentedJSON(http.StatusBadRequest, err)
+		} else if index < 0 || index >= len(Env.RelayCronTasks) {
+			c.IndentedJSON(http.StatusBadRequest, errors.New("Id de la tarea fuera de rango"))
+		}
+		deleteCronTask(Env, Cron, index)
 		fmt.Fprint(c.Writer, "OK")
 	}
 }

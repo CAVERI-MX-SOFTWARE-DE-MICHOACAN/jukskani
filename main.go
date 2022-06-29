@@ -111,7 +111,7 @@ func main() {
 	Env := initEnviron()
 
 	//embd.InitGPIO()
-	go initCronTasks(Env)
+	go initCronTasks(Env, Cron)
 	go prepareExit(sign)
 	go readDHT(sensorDHT)
 	go lcdDisplayRoutine(lcd)
@@ -120,7 +120,8 @@ func main() {
 
 	router.Static("/public", "./public")
 	router.POST("/api/relays/:id", RelayHandler(Env))
-	router.POST("/api/cron", CronHandler(Env))
+	router.POST("/api/cron", AddTaskCronHandler(Env, Cron))
+	router.DELETE("/api/cron/:id", DeleteTaskCronHandler(Env, Cron))
 	router.GET("/api/dht22", DHT22Handler(Env))
 
 	router.Run(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))
