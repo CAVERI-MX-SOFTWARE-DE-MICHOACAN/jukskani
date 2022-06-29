@@ -46,6 +46,10 @@ func lcd_init() *device.Lcd {
 	_i2c, err := i2c.NewI2C(0x23, 1)
 	check(err)
 	_lcd, err := device.NewLcd(_i2c, device.LCD_16x2)
+	if err != nil {
+		log.Fatalln("No se puede inicializar la pantalla LCD...")
+		panic(err)
+	}
 	_lcd.BacklightOn()
 	_lcd.Clear()
 	check(err)
