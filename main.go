@@ -96,7 +96,7 @@ func prepareExit(signal chan os.Signal) {
 	os.Exit(0)
 }
 func initEnviron() *models.Environ {
-	log.Println("Leyendo environ.json...")
+
 	Env := loadEnviron()
 	log.Printf("Environ: %+v \n %+v \n", Env, Env.SensorDHT)
 	sensorDHT = Env.SensorDHT
@@ -133,6 +133,6 @@ func main() {
 	router.GET("/api/relays/:id", RelayHandler(Env))
 	router.GET("/api/dht22", DHT22Handler(Env))
 
-	router.Run(":8080")
+	router.Run(fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT")))
 
 }
