@@ -21,6 +21,7 @@ const TIME_FORMAT = "02 Jan 15:04:05"
 var sensorDHT *models.SensorDHT
 
 var Temperature, Humidity float64
+var DHTError = false
 
 var _i2c *i2c.I2C
 var _lcd *device.Lcd
@@ -57,7 +58,11 @@ func lcd_print(_lcd *device.Lcd, line1 string, line2 string) {
 func lcdDisplayRoutine(lcd *device.Lcd) {
 	for range time.Tick(1 * time.Second) {
 		now := time.Now().Format(TIME_FORMAT)
-		lcd_print(lcd, now, fmt.Sprintf("%04.1f*C %04.1f%%HR  ", Temperature, Humidity))
+		dhterr := " "
+		if DHTError {
+			dhterr = "!"
+		}
+		lcd_print(lcd, now, fmt.Sprintf("%04.1f*C %04.1f%%HR %s", Temperature, Humidity, dhterr))
 	}
 }
 func readDHT(sensor *models.SensorDHT) {
@@ -66,11 +71,11 @@ func readDHT(sensor *models.SensorDHT) {
 
 		err := sensor.Read()
 		if err != nil {
+			DHTError = true
 			log.Println(err)
-			Temperature = 0
-			Humidity = 0
 			continue
 		}
+		DHTError = false
 		Temperature = sensor.Temperature
 		Humidity = sensor.Humidity
 		log.Println(Temperature, "*C", Humidity, "%HR", "err: ", err)
