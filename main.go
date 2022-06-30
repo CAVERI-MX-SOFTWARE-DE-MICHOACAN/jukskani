@@ -125,7 +125,7 @@ func main() {
 
 	router := gin.Default()
 
-	router.Static("/", "./public")
+	router.Static("/static", "./public")
 	router.POST("/api/relays/:id", RelayHandler(Env))
 	router.POST("/api/cron", AddTaskCronHandler(Env, Cron))
 	router.DELETE("/api/cron/:id", DeleteTaskCronHandler(Env, Cron))
