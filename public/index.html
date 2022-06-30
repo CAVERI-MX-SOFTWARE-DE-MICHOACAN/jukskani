@@ -337,8 +337,8 @@
                 if (res.ok) return res.json()
             })
             .then(lectura => {
-                hr_td.innerHTML = lectura.H + " %HR"
-                temp_td.innerHTML = lectura.T + " *C"
+                hr_td.innerHTML = lectura.H
+                temp_td.innerHTML = lectura.T
             })
             .catch(console.log)
             .finally(() => {
