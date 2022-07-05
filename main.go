@@ -103,6 +103,22 @@ func initEnviron() *models.Environ {
 	}
 	return Env
 }
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
 
 func main() {
 	Cron = cron.New()
@@ -124,6 +140,7 @@ func main() {
 	go lcdDisplayRoutine(lcd)
 
 	router := gin.Default()
+	router.Use(CORSMiddleware())
 
 	router.Static("/static/", "./public")
 	router.POST("/api/relays/:id", RelayHandler(Env))

@@ -1,0 +1,337 @@
+<script setup lang="ts">
+
+import { ref } from 'vue'
+defineProps<{msg:string}>()
+
+const count = ref(0)
+
+let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        }),
+        mode: "cors"
+    })
+    
+    var hr_td = document.querySelector("#HR")
+    var temp_td = document.querySelector("#Temp")
+    function obtenerHumTemp() {
+
+        fetch(peticion)
+            .then(res => {
+                if (res.ok) return res.json()
+            })
+            .then(lectura => {
+                console.table(lectura)
+                if(hr_td && temp_td){
+                    temp_td.innerHTML = lectura.T
+                    hr_td.innerHTML = lectura.H
+                }
+            })
+            .catch(console.log)
+            .finally(() => {
+
+            })
+
+    }
+    setInterval(obtenerHumTemp, 5e3)
+</script>
+
+<template>
+
+  <div class="flex h-screen bg-gray-100 font-sans">
+    <h1>{msg}
+    </h1>
+    <!-- Side bar-->
+    <div id="sidebar" class="h-screen w-16 menu bg-white text-white px-4 flex items-center nunito static fixed shadow">
+
+        <ul class="list-reset ">
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fas fa-home fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Home</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0 ">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fas fa-tasks fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Tasks</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fa fa-envelope fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Messages</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fas fa-chart-area fa-fw mr-3 text-indigo-400"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Analytics</span>
+                </a>
+            </li>
+            <li class="my-2 md:my-0">
+                <a href="#" class="block py-1 md:py-3 pl-1 align-middle text-gray-600 no-underline hover:text-indigo-400">
+                    <i class="fa fa-wallet fa-fw mr-3"></i><span class="w-full inline-block pb-1 md:pb-0 text-sm">Payments</span>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+    <div class="flex flex-row flex-wrap flex-1 flex-grow content-start pl-16">
+
+        <div class="h-16 lg:h-16 w-full flex flex-wrap">
+           
+            <nav id="header1" class="bg-gray-100 w-auto flex-1 border-b-1 border-gray-300 order-1 lg:order-2">
+
+                <div class="flex h-full justify-between items-center">
+
+                    <!--Search-->
+                    <div class="relative w-full max-w-3xl px-6">
+                        <div class="block w-full">
+                            <h1>RPI3 JUKSKANI v1.0 - CAVERI.MX</h1>
+                        </div>
+                        <!-- <div class="absolute h-10 mt-1 left-0 top-0 flex items-center pl-10">
+                            <svg class="h-4 w-4 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path d="M12.9 14.32a8 8 0 1 1 1.41-1.41l5.35 5.33-1.42 1.42-5.33-5.34zM8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"></path>
+                            </svg>
+                        </div>
+
+                        <input id="search-toggle" type="search" placeholder="search" class="block w-full bg-gray-200 focus:outline-none focus:bg-white focus:shadow-md text-gray-700 font-bold rounded-full pl-12 pr-4 py-3" onkeyup="updateSearchResults(this.value);"> -->
+
+                    </div>
+                    <!-- / Search-->                                        
+
+                    <!--Menu-->
+
+                    <div class="flex relative inline-block pr-6">
+
+                        <div class="relative text-sm">
+                            <button id="userButton" class="flex items-center focus:outline-none mr-3">
+                                <img class="w-8 h-8 rounded-full mr-4" src="http://i.pravatar.cc/300" alt="Avatar of User"> <span class="hidden md:inline-block">Hi, User </span>
+                                <svg class="pl-2 h-2" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 129 129" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 129 129">
+                                    <g>
+                                        <path d="m121.3,34.6c-1.6-1.6-4.2-1.6-5.8,0l-51,51.1-51.1-51.1c-1.6-1.6-4.2-1.6-5.8,0-1.6,1.6-1.6,4.2 0,5.8l53.9,53.9c0.8,0.8 1.8,1.2 2.9,1.2 1,0 2.1-0.4 2.9-1.2l53.9-53.9c1.7-1.6 1.7-4.2 0.1-5.8z"></path>
+                                    </g>
+                                </svg>
+                            </button>
+                            <div id="userMenu" class="bg-white nunito rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible">
+                                <ul class="list-reset">
+                                    <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-indigo-400 hover:text-white no-underline hover:no-underline">My account</a></li>
+                                    <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-indigo-400 hover:text-white no-underline hover:no-underline">Notifications</a></li>
+                                    <li>
+                                        <hr class="border-t mx-2 border-gray-400">
+                                    </li>
+                                    <li><a href="#" class="px-4 py-2 block text-gray-900 hover:bg-indigo-400 hover:text-white no-underline hover:no-underline">Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- / Menu -->
+
+                </div>
+
+            </nav>
+        </div>
+
+        <!--Dash Content -->
+        <div id="dash-content" class="bg-gray-200 py-6 lg:py-0 w-full lg:max-w-sm flex flex-wrap content-start">
+
+            <div class="w-1/2 lg:w-full">
+                <div class="border-2 border-gray-400 border-dashed hover:border-transparent hover:bg-white hover:shadow-xl rounded p-6 m-2 md:mx-10 md:my-6">
+                    <div class="flex flex-col items-center">
+                        <div class="flex-shrink pr-4">
+                            <div class="rounded-full p-3 bg-gray-300">
+                                <div class="text-indigo-500">
+                                    <svg style="fill: indigo" xmlns="http://www.w3.org/2000/svg" width="24px" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M176 322.9l.0002-114.9c0-8.75-7.25-16-16-16s-15.1 7.25-15.1 16L144 322.9c-18.62 6.625-32 24.25-32 45.13c0 26.5 21.5 48 48 48s48-21.5 48-48C208 347.1 194.6 329.5 176 322.9zM272 278.5V112c0-61.87-50.12-112-111.1-112S48 50.13 48 112v166.5c-19.75 24.75-32 55.5-32 89.5c0 79.5 64.5 143.1 144 143.1S304 447.5 304 368C304 334 291.8 303.1 272 278.5zM160 448c-44.13 0-80-35.87-80-79.1c0-25.5 12.25-48.88 32-63.75v-192.3c0-26.5 21.5-48 48-48s48 21.5 48 48v192.3c19.75 14.75 32 38.25 32 63.75C240 412.1 204.1 448 160 448z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">    
+                            <h3 class="font-bold text-3xl"> <span id="Temp">--</span> <span class="text-green-500"></span></h3>
+                            <h5 class="font-bold text-gray-500">°C</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="w-1/2 lg:w-full">
+                <div class="border-2 border-gray-400 border-dashed hover:border-transparent hover:bg-white hover:shadow-xl rounded p-6 py-8 m-2 md:mx-10 md:my-6">
+                    <div class="flex flex-col items-center">
+                        <div class="flex-shrink pr-4">
+                            <div class="rounded-full p-3 bg-gray-300">
+                                <div class="text-indigo-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" style="fill: indigo;" viewBox="0 0 576 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M223.1 0C262.6 0 295.9 22.82 311.2 55.7C325.7 41.07 345.8 32 368 32C406.7 32 438.1 59.48 446.4 96H448C483.3 96 512 124.7 512 160C512 195.3 483.3 224 448 224H127.1C92.65 224 63.1 195.3 63.1 160C63.1 124.7 92.65 96 127.1 96C127.1 42.98 170.1 0 223.1 0zM92.58 372.3C85.76 383.7 71.02 387.4 59.65 380.6C48.29 373.8 44.6 359 51.42 347.7L99.42 267.7C106.2 256.3 120.1 252.6 132.3 259.4C143.7 266.2 147.4 280.1 140.6 292.3L92.58 372.3zM468.3 259.4C479.7 266.2 483.4 280.1 476.6 292.3L428.6 372.3C421.8 383.7 407 387.4 395.7 380.6C384.3 373.8 380.6 359 387.4 347.7L435.4 267.7C442.2 256.3 456.1 252.6 468.3 259.4V259.4zM204.6 372.3C197.8 383.7 183 387.4 171.7 380.6C160.3 373.8 156.6 359 163.4 347.7L211.4 267.7C218.2 256.3 232.1 252.6 244.3 259.4C255.7 266.2 259.4 280.1 252.6 292.3L204.6 372.3zM356.3 259.4C367.7 266.2 371.4 280.1 364.6 292.3L316.6 372.3C309.8 383.7 295 387.4 283.7 380.6C272.3 373.8 268.6 359 275.4 347.7L323.4 267.7C330.2 256.3 344.1 252.6 356.3 259.4V259.4zM384 448C410.9 448 439.4 437.2 461.4 421.9L461.5 421.9C473.4 413.4 489.5 414.1 500.7 423.6C515 435.5 533.2 444.6 551.3 448.8C568.5 452.8 579.2 470.1 575.2 487.3C571.2 504.5 553.1 515.2 536.7 511.2C512.2 505.4 491.9 494.6 478.5 486.2C449.5 501.7 417 512 384 512C352.1 512 323.4 502.1 303.6 493.1C297.7 490.5 292.5 487.8 288 485.4C283.5 487.8 278.3 490.5 272.4 493.1C252.6 502.1 223.9 512 192 512C158.1 512 126.5 501.7 97.5 486.2C84.12 494.6 63.79 505.4 39.27 511.2C22.06 515.2 4.853 504.5 .8422 487.3C-3.169 470.1 7.532 452.8 24.74 448.8C42.84 444.6 60.96 435.5 75.31 423.6C86.46 414.1 102.6 413.4 114.5 421.9L114.6 421.9C136.7 437.2 165.1 448 192 448C219.5 448 247 437.4 269.5 421.9C280.6 414 295.4 414 306.5 421.9C328.1 437.4 356.5 448 384 448H384z"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">    
+                            <h3 class="font-bold text-3xl"> <span id="HR">--</span> <span class="text-green-500"></span></h3>
+                            <h5 class="font-bold text-gray-500">%HR</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+        </div>
+
+        <!--Graph Content -->
+        <div id="main-content" class="w-full flex-1">
+
+            <div class="flex flex-1 flex-wrap">
+
+                <div class="w-full xl:w-2/3 p-6 xl:max-w-6xl">
+
+                    <!--"Container" for the graphs"-->
+                    <div class="max-w-full lg:max-w-3xl xl:max-w-5xl">
+
+                        <!--Graph Card-->
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Graph</h5>
+                        </div>
+                        <div class="p-5">
+                            <div class="ct-chart ct-golden-section" id="chart1"></div>
+                        </div>
+                        <!--/Graph Card-->
+
+                        <!--Table Card-->
+                        <div class="p-3">
+                            <div class="border-b p-3">
+                                <h5 class="font-bold text-black">Table</h5>
+                            </div>
+                            <div class="p-5">
+                                <table class="w-full p-5 text-gray-700">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left text-blue-900">Name</th>
+                                            <th class="text-left text-blue-900">Side</th>
+                                            <th class="text-left text-blue-900">Role</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr>
+                                            <td>Obi Wan Kenobi</td>
+                                            <td>Light</td>
+                                            <td>Jedi</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Greedo</td>
+                                            <td>South</td>
+                                            <td>Scumbag</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Darth Vader</td>
+                                            <td>Dark</td>
+                                            <td>Sith</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <p class="py-2"><a href="#">See More issues...</a></p>
+
+                            </div>
+                        </div>
+                        <!--/table Card-->
+
+                    </div>
+
+                </div>
+
+                <div class="w-full xl:w-1/3 p-6 xl:max-w-4xl border-l-1 border-gray-300">
+
+                    <!--"Container" for the graphs"-->
+                    <div class="max-w-sm lg:max-w-3xl xl:max-w-5xl">
+
+                        <!--Graph Card-->
+
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Graph</h5>
+                        </div>
+                        <div class="p-5">
+                            <div class="ct-chart ct-golden-section" id="chart2"></div>
+                        </div>
+
+                        <!--/Graph Card-->
+
+                        <!--Graph Card-->
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Graph</h5>
+                        </div>
+                        <div class="p-5">
+                            <div class="ct-chart ct-golden-section" id="chart3"></div>
+                        </div>
+
+                        <!--/Graph Card-->
+
+                        <!--Graph Card-->
+
+                        <div class="border-b p-3">
+                            <h5 class="font-bold text-black">Graph</h5>
+                        </div>
+                        <div class="p-5">
+                            <div class="ct-chart ct-golden-section" id="chart4"></div>
+                        </div>
+
+                        <!--/Graph Card-->
+
+                        <!--Template Card-->
+                        <div class="p-3">
+                            <div class="border-b p-3">
+                                <h5 class="font-bold text-black">Template</h5>
+                            </div>
+                            <div class="p-5">
+
+                            </div>
+                        </div>
+                        <!--/Template Card-->
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+  </div>
+    
+</template>
+<style>
+        .nunito {
+            font-family: 'nunito', font-sans;
+        }
+        
+        .border-b-1 {
+            border-bottom-width: 1px;
+        }
+        
+        .border-l-1 {
+            border-left-width: 1px;
+        }
+        
+        hover\:border-none:hover {
+            border-style: none;
+        }
+        
+        #sidebar {
+            transition: ease-in-out all .3s;
+            z-index: 9999;
+        }
+        
+        #sidebar span {
+            opacity: 0;
+            position: absolute;
+            transition: ease-in-out all .1s;
+        }
+        
+        #sidebar:hover {
+            width: 150px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            /*shadow-2xl*/
+        }
+        
+        #sidebar:hover span {
+            opacity: 1;
+        }
+    </style>
