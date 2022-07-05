@@ -1,7 +1,7 @@
 config:
 	cp data\environ.example.json data\environ.json
 install:
-	echo "Building..."
+	@echo "Building..."
 	go build .
 	cp .env.example .env
 service:

@@ -3,7 +3,7 @@
 import { ref } from 'vue'
 defineProps<{msg:string}>()
 
-const count = ref(0)
+const Sensor: any = ref(0)
 
 let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
         headers: new Headers({
@@ -12,8 +12,6 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
         mode: "cors"
     })
     
-    var hr_td = document.querySelector("#HR")
-    var temp_td = document.querySelector("#Temp")
     function obtenerHumTemp() {
 
         fetch(peticion)
@@ -21,11 +19,9 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
                 if (res.ok) return res.json()
             })
             .then(lectura => {
-                console.table(lectura)
-                if(hr_td && temp_td){
-                    temp_td.innerHTML = lectura.T
-                    hr_td.innerHTML = lectura.H
-                }
+                console.log(lectura)
+                Sensor.value=lectura
+             
             })
             .catch(console.log)
             .finally(() => {
@@ -146,7 +142,7 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
                             </div>
                         </div>
                         <div class="flex-1">    
-                            <h3 class="font-bold text-3xl"> <span id="Temp">--</span> <span class="text-green-500"></span></h3>
+                            <h3 class="font-bold text-3xl"> <span id="Temp">{{Sensor.T}}</span></h3>
                             <h5 class="font-bold text-gray-500">°C</h5>
                         </div>
                     </div>
@@ -163,7 +159,7 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
                             </div>
                         </div>
                         <div class="flex-1">    
-                            <h3 class="font-bold text-3xl"> <span id="HR">--</span> <span class="text-green-500"></span></h3>
+                            <h3 class="font-bold text-3xl"> <span id="HR">{{Sensor.H}}</span></h3>
                             <h5 class="font-bold text-gray-500">%HR</h5>
                         </div>
                     </div>
