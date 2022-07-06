@@ -1,7 +1,10 @@
 <script setup lang="ts">
 
 import { ref } from 'vue'
-defineProps<{msg:string}>()
+
+import Relays from './Relays.vue'
+import Relay from './Relay.vue'
+
 
 const Sensor: any = ref(0)
 
@@ -35,8 +38,7 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
 <template>
 
   <div class="flex h-screen bg-gray-100 font-sans">
-    <h1>{msg}
-    </h1>
+    
     <!-- Side bar-->
     <div id="sidebar" class="h-screen w-16 menu bg-white text-white px-4 flex items-center nunito static fixed shadow">
 
@@ -82,6 +84,7 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
                     <div class="relative w-full max-w-3xl px-6">
                         <div class="block w-full">
                             <h1>RPI3 JUKSKANI v1.0 - CAVERI.MX</h1>
+                           
                         </div>
                         <!-- <div class="absolute h-10 mt-1 left-0 top-0 flex items-center pl-10">
                             <svg class="h-4 w-4 fill-current text-gray-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -182,10 +185,12 @@ let peticion = new Request("https://rpi3.caveri.mx/api/dht22", {
 
                         <!--Graph Card-->
                         <div class="border-b p-3">
-                            <h5 class="font-bold text-black">Graph</h5>
+                            <h5 class="font-bold text-black">Relevadores</h5>
                         </div>
                         <div class="p-5">
-                            <div class="ct-chart ct-golden-section" id="chart1"></div>
+                            <Relays/>
+                            <Relay Index="5" State="0"/>
+                            <!-- <div class="ct-chart ct-golden-section" id="chart1"></div> -->
                         </div>
                         <!--/Graph Card-->
 
